@@ -2,42 +2,23 @@
     <div id="main">
         <div class="time">{{ formatTime(time) }}</div>
         <div class="frame">
-            <Menu
-                :title="'Alarm'" 
-                :left="{ text: isEditing ? 'Done' : 'Edit', onClick: () => isEditing = !isEditing }"
-                :right="{ text:'＋', onClick: () => alarmAdd.visible = true }"
-            />
-            <div class="alarm-items">
-                <div v-for="alarm in alarms" :key="alarm.id">
-                    <AlarmItem
-                        :id="alarm.id"
-                        :hour="alarm.hour"
-                        :minute="alarm.minute"
-                        :description="alarm.description"
-                        :isEditing="isEditing"
-                        :remove="id => alarms = alarms.filter(v => v.id != id)"
-                    />
-                </div>
-            </div>
-            <AlarmAdd
-                :visible="alarmAdd.visible"
-                :close="() => alarmAdd.visible = false"
-                :register="v => addAlarm(v)"
-            />
-            <Footer/>
+            <Alarm v-if="view == 'Alarm'" />
+            <Stopwatch v-if="view == 'Stopwatch'" />
+            <Setting v-if="view == 'Setting'" />
+            <Footer v-model="view"/>
         </div>
     </div>
 </template>
 
 <script>
 import Footer from "@/components/Footer.vue";
-import Menu from "@/components/Menu.vue";
-import AlarmItem from "@/components/AlarmItem.vue";
-import AlarmAdd from "@/components/AlarmAdd.vue";
+import Alarm from "@/views/Alarm.vue";
+import Stopwatch from "@/views/Stopwatch.vue";
+import Setting from "@/views/Setting.vue";
 
 export default {
     name: "Main",
-    components: { Footer, AlarmItem, AlarmAdd, Menu },
+    components: { Footer, Alarm, Stopwatch, Setting },
     data() {
         return {
             time: {},
@@ -47,6 +28,7 @@ export default {
             ],
             alarmAdd: { visible: false },
             isEditing: false,
+            view: "Alarm",
         };
     },
     computed: {
@@ -72,11 +54,13 @@ export default {
                 .join(":")
         },
         addAlarm(alarm) {
+            alarm.id = this.randomString();
+            alarm.description = alarm.description || "　";
             this.alarmAdd.visible = false;
             this.alarms.push(alarm);
         },
         randomString() {
-            return [...Array(32)].map(() => (~~(Math.random() * 36)).toString(36)).join('');
+            return [...Array(32)].map(() => (~~(Math.random() * 36)).toString(36)).join("");
         },
     },
 };
@@ -86,9 +70,6 @@ export default {
 .frame {
     position: relative;
     height: 100%;
-}
-.alarm-items {
-    padding-left: 12px;
 }
 .time {
     z-index: 10;

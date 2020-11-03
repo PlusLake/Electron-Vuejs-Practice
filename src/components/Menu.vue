@@ -1,7 +1,7 @@
 <template>
     <div class="menu">
-        <div class="button left" @click="left.onClick()">{{ left.text }}</div>
-        <div class="button right" @click="right.onClick()">{{ right.text }}</div>
+        <div class="button left" v-if="left" @click="left.onClick()">{{ left.text }}</div>
+        <div class="button right" v-if="right" @click="right.onClick()">{{ right.text }}</div>
         <div class="title">{{ title }}</div>
     </div>
 </template>

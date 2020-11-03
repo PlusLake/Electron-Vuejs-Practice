@@ -1,10 +1,10 @@
 <template>
-    <div class="frame">
+    <div class="alarm-item">
         <div class="edit" :class="{ 'edit-enabled' : isEditing }">
             <div class="delete" @click="remove(id)" :style="`transform: translate(${isEditing ? 32 : 0}px, 0px);`"/>
         </div>
         <div class=time :style="`transform: translate(${isEditing ? 32 : 0}px, 0px);`">
-            {{ hour }}<span class="colon">:</span>{{ minute }}
+            {{ hour }}<span class="colon">:</span>{{ (minute + "").padStart(2, "0") }}
         </div>
         <div class="description" :style="`transform: translate(${isEditing ? 32 : 0}px, 0px);`">
             {{ description }}
@@ -38,7 +38,9 @@ export default {
 </script>
 
 <style scoped>
-.frame {
+.alarm-item {
+    position: relative;
+    height: 100%;
     border-bottom: 1px solid #262626;
     padding: 8px 0px 8px 8px;
 }

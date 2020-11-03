@@ -13,7 +13,7 @@
             </div>
             <div class="inner minute" @wheel="scrollMinute">
                 <div class="item" :class="{ 'visible' : isNearBy(minute, i - 1, 60)  }" :style="`top: ${ calculateY(i, y[1], 60)}px`" v-for="i in 60" :key="i">
-                    {{ i - 1 }}
+                    {{ ((i - 1) + "").padStart(2, "0") }}
                 </div>
             </div>
             <div class="current"/>
@@ -57,18 +57,6 @@ export default {
     },
     mounted() {
         clearInterval(localStorage.getItem("scrollTimer"));
-        setInterval(() => {
-            let hour = Math.round((this.y[0] / 36) % 24);
-            hour = ((hour < 0 ? Math.abs(hour) : 24 - hour) + 5) % 24;
-            if (hour != this.hour) {
-                this.hour = hour;
-            }
-            let minute = Math.round((this.y[1] / 36) % 60);
-            minute = ((minute < 0 ? Math.abs(minute) : 60 - minute) + 5) % 60;
-            if (minute != this.minute) {
-                this.minute = minute;
-            }
-        }, 15);
     },
     methods: {
         scrollHour(e) {
@@ -79,6 +67,10 @@ export default {
         },
         scroll(e, i) {
             this.y[i] += 36 * (e.wheelDelta > 0 ? 1 : -1);
+            let hour = Math.round((this.y[0] / 36) % 24);
+            this.hour = ((hour < 0 ? Math.abs(hour) : 24 - hour) + 5) % 24;
+            let minute = Math.round((this.y[1] / 36) % 60);
+            this.minute = ((minute < 0 ? Math.abs(minute) : 60 - minute) + 5) % 60;
             e.preventDefault();
         },
         calculateY(i, coordinate, SIZE) {

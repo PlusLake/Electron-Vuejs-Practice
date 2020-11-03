@@ -1,9 +1,9 @@
 <template>
-    <div class="option">
+    <div class="option" @click="focusInput">
         <div class="inner">
             <div v-if="type != 'Text'" class="arrow">＞</div>
             <div v-if="type == 'Text'">
-                <input maxlength="32" spellcheck="false" :value="value" @input="input"/>
+                <input ref="input" maxlength="32" spellcheck="false" :value="value" @input="input"/>
             </div>
             {{ title }}
         </div>
@@ -24,6 +24,11 @@ export default {
     methods: {
         input(e) {
             this.$emit("input", e.target.value);
+        },
+        focusInput() {
+            if (this.$refs.input) {
+                this.$refs.input.focus();
+            }
         }
     },
 };
