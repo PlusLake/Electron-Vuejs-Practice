@@ -1,0 +1,37 @@
+* * {
+    margin: 0px;
+    font-family: "regular";
+    color: #FFF;
+    user-select: none;
+}
+
+@font-face {
+    font-family: "round";
+    src: url("~@/assets/Round.ttf");
+}
+
+
+@font-face {
+    font-family: "light";
+    src: url("~@/assets/Light.ttf");
+}
+
+@font-face {
+    font-family: "regular";
+    src: url("~@/assets/Regular.ttf");
+}
+
+@font-face {
+    font-family: "medium";
+    src: url("~@/assets/Medium.ttf");
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+#main {
+    background-color: #000;
+    height: 100%;
+}
