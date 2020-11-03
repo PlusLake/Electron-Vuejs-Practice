@@ -1,24 +1,7 @@
-# alarm
+# Electron + Vue.js Practice
 
-## Project setup
-```
-yarn install
-```
+A simple alarm UI (iOS-like) but actually do nothing.  
+Maybe try make C version (glfw) and Java version (Swing) with exactly same funtionality.
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![](/docs/screenshot0.png)
+![](/docs/screenshot1.png)

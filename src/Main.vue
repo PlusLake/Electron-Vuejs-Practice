@@ -4,12 +4,19 @@
         <div class="frame">
             <Menu
                 :title="'Alarm'" 
-                :left="{ text: 'Edit', onClick: () => null }"
+                :left="{ text: isEditing ? 'Done' : 'Edit', onClick: () => isEditing = !isEditing }"
                 :right="{ text:'＋', onClick: () => alarmAdd.visible = true }"
             />
             <div class="alarm-items">
                 <div v-for="alarm in alarms" :key="alarm.id">
-                    <AlarmItem :hour="alarm.hour" :minute="alarm.minute" :description="alarm.description" />
+                    <AlarmItem
+                        :id="alarm.id"
+                        :hour="alarm.hour"
+                        :minute="alarm.minute"
+                        :description="alarm.description"
+                        :isEditing="isEditing"
+                        :remove="id => alarms = alarms.filter(v => v.id != id)"
+                    />
                 </div>
             </div>
             <AlarmAdd
@@ -35,10 +42,11 @@ export default {
         return {
             time: {},
             alarms: [
-                { id: 0, hour: 7, minute: 21, description: "Go to school." },
-                { id: 1, hour: 8, minute: 10, description: "Buy bread." },
+                { id: this.randomString(), hour: 7, minute: 21, description: "Go to school." },
+                { id: this.randomString(), hour: 8, minute: 10, description: "Buy bread." },
             ],
-            alarmAdd: { visible: false }
+            alarmAdd: { visible: false },
+            isEditing: false,
         };
     },
     computed: {
@@ -66,6 +74,9 @@ export default {
         addAlarm(alarm) {
             this.alarmAdd.visible = false;
             this.alarms.push(alarm);
+        },
+        randomString() {
+            return [...Array(32)].map(() => (~~(Math.random() * 36)).toString(36)).join('');
         },
     },
 };

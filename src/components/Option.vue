@@ -3,7 +3,7 @@
         <div class="inner">
             <div v-if="type != 'Text'" class="arrow">＞</div>
             <div v-if="type == 'Text'">
-                <input maxlength="32" spellcheck="false" v-model="local"/>
+                <input maxlength="32" spellcheck="false" :value="value" @input="input"/>
             </div>
             {{ title }}
         </div>
@@ -18,32 +18,12 @@ export default {
         type: String,
         value: String,
     },
-    data() {
-        return {
-            local: "",
-        };
-    },
-    watch: {
-        value(v) {
-            this.$emit("input", v);
-        },
-        local(v) {
-            this.$emit("input", v);
-        }
-    },
     mounted() {
         this.local = this.value;
     },
     methods: {
-        get() {
-            return this.value;
-        },
-        set(v) {
-            this.local = v;  
-        },
-        update(v) {
-            this.local = v;
-            this.$emit('input', v);
+        input(e) {
+            this.$emit("input", e.target.value);
         }
     },
 };
