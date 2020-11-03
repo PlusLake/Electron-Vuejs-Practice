@@ -5,3 +5,9 @@ Maybe try make C version (glfw) and Java version (Swing) with exactly same funti
 
 ![](/docs/screenshot0.png)
 ![](/docs/screenshot1.png)
+
+## credits
+
+- Google Fonts
+- Bootstrap Icons
+- Vue CLI Plugin Electron Builder
