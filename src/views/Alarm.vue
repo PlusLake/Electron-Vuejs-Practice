@@ -1,19 +1,31 @@
 <template>
-    <div>
+    <div class="alarm">
         <Menu
             :title="'Alarm'" 
-            :left="{ text: isEditing ? 'Done' : 'Edit', onClick: () => isEditing = !isEditing }"
+            :left="{ text: alarms.length == 0 ? '' : isEditing ? 'Done' : 'Edit', onClick: () => isEditing = !isEditing }"
             :right="{ text:'＋', onClick: () => alarmAdd.visible = true }"
         />
         <div class="alarm-items">
-            <div v-for="alarm in alarms" :key="alarm.id">
+            <div v-for="(alarm, index) in alarms" :key="alarm.id">
                 <AlarmItem
                     :id="alarm.id"
                     :hour="alarm.hour"
                     :minute="alarm.minute"
                     :description="alarm.description"
                     :isEditing="isEditing"
-                    :remove="id => alarms = alarms.filter(v => v.id != id)"
+                    :remove="id => removeAlarm(id)"
+                    :offset="index"
+                />
+            </div>
+            <div v-for="(alarm) in alarmsDeleting" :key="alarm.id">
+                <AlarmItem
+                    :id="alarm.id"
+                    :hour="alarm.hour"
+                    :minute="alarm.minute"
+                    :description="alarm.description"
+                    :offset="alarm.offset"
+                    :removing="true"
+                    :isEditing="true"
                 />
             </div>
         </div>
@@ -38,9 +50,17 @@ export default {
                 { id: this.randomString(), hour: 7, minute: 21, description: "Go to school." },
                 { id: this.randomString(), hour: 8, minute: 10, description: "Buy bread." },
             ],
+            alarmsDeleting: [],
             alarmAdd: { visible: false },
             isEditing: false,
         };
+    },
+    watch: {
+        alarms(alarms) {
+            if (alarms.length == 0) {
+                this.isEditing = false;
+            }
+        }
     },
     methods: {
         addAlarm(alarm) {
@@ -48,6 +68,12 @@ export default {
             alarm.description = alarm.description || "　";
             this.alarmAdd.visible = false;
             this.alarms.push(alarm);
+        },
+        removeAlarm(id) {
+            let removing = this.alarms.find(v => v.id == id);
+            removing.offset = this.alarms.findIndex(v => v.id == id);
+            this.alarmsDeleting.push(removing);
+            this.alarms = this.alarms.filter(v => v.id != id);
         },
         randomString() {
             return [...Array(32)].map(() => (~~(Math.random() * 36)).toString(36)).join('');
@@ -57,7 +83,12 @@ export default {
 </script>
 
 <style scoped>
+.alarm {
+    height: 100%;
+}
 .alarm-items {
     padding-left: 12px;
+    position: relative;
+    height: 100%;
 }
 </style>

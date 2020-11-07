@@ -36,7 +36,6 @@ export default {
     },
     methods: {
         menu(v) {
-            console.log(v)
             this.$emit('input', v);
         },
     },

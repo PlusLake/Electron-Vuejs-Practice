@@ -1,15 +1,23 @@
 <template>
-    <div class="alarm-item">
-        <div class="edit" :class="{ 'edit-enabled' : isEditing }">
-            <div class="delete" @click="remove(id)" :style="`transform: translate(${isEditing ? 32 : 0}px, 0px);`"/>
+    <div class="alarm-item"
+        :class="{ 'removing' : removing }"
+        :style="`top: ${ 109 * offset }px;`"
+    >
+        <div class="inner">
+            <div class="edit" :class="{ 'edit-enabled' : isEditing }">
+                <div class="delete"
+                    @click="remove(id)"
+                    :style="`transform: translate(${ isEditing ? 32 : 0 }px, 0px); display: ${ removing ? 'none' : 'inline-block' };`"
+                />
+            </div>
+            <div class=time :style="`transform: translate(${isEditing ? 32 : 0}px, 0px);`">
+                {{ hour }}<span class="colon">:</span>{{ (minute + "").padStart(2, "0") }}
+            </div>
+            <div class="description" :style="`transform: translate(${isEditing ? 32 : 0}px, 0px);`">
+                {{ description }}
+            </div>
+            <SwitchButton class="button" v-model="enabled" />
         </div>
-        <div class=time :style="`transform: translate(${isEditing ? 32 : 0}px, 0px);`">
-            {{ hour }}<span class="colon">:</span>{{ (minute + "").padStart(2, "0") }}
-        </div>
-        <div class="description" :style="`transform: translate(${isEditing ? 32 : 0}px, 0px);`">
-            {{ description }}
-        </div>
-        <SwitchButton class="button" v-model="enabled" />
     </div>
 </template>
 
@@ -28,6 +36,8 @@ export default {
         description: String,
         isEditing: Boolean,
         remove: Function,
+        offset: Number,
+        removing: Boolean,
     },
     data() {
         return {
@@ -39,9 +49,13 @@ export default {
 
 <style scoped>
 .alarm-item {
-    position: relative;
-    height: 100%;
+    position: absolute;
+    width: 100%;
     border-bottom: 1px solid #262626;
+    transition: ease-in-out 200ms;
+}
+.alarm-item .inner {
+    position: relative;
     padding: 8px 0px 8px 8px;
 }
 .time {
@@ -65,7 +79,7 @@ export default {
 }
 .button {
     position: absolute;
-    right: 16px;
+    right: 28px;
     top: 40px;
 }
 .edit {
@@ -96,5 +110,18 @@ export default {
     position: relative;
     left: 2px;
     top: -1px;
+}
+.removing {
+    animation: ease-in-out 300ms forwards removing;
+}
+@keyframes removing {
+    from {
+        opacity: 1;
+        left: 12px;
+    }
+    to {
+        opacity: 0;
+        left: 100%;
+    }
 }
 </style>

@@ -49,8 +49,8 @@ export default {
     watch: {
         visible(v) {
             if (v) {
-                this.y[0] = 36 * 5;
-                this.y[1] = 36 * 5;
+                this.y = [36 * 5, 36 * 5];
+                this.hour = this.minute = 0;
                 this.description = "";
             }
         }

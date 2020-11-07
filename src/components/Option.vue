@@ -56,6 +56,7 @@ export default {
     color: #636366;
 }
 input {
+    cursor: pointer;
     color: #636366;
     background-color: transparent;
     border: none;
