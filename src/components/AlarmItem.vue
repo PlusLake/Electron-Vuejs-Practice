@@ -2,6 +2,7 @@
     <div class="alarm-item"
         :class="{ 'removing' : removing }"
         :style="`top: ${ 109 * offset }px;`"
+        v-on:animationend="() => removed(id)"
     >
         <div class="inner">
             <div class="edit" :class="{ 'edit-enabled' : isEditing }">
@@ -38,6 +39,7 @@ export default {
         remove: Function,
         offset: Number,
         removing: Boolean,
+        removed: Function,
     },
     data() {
         return {

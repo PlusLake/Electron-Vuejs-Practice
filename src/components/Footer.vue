@@ -2,18 +2,19 @@
     <div class="footer">
         <Stopwatch
             class="icon"
+            style="display: none;"
             @click.native="menu('Stopwatch')"
             :class="{ 'icon-enabled' : value == 'Stopwatch' }"
-        />
-        <Alarm
-            class="icon"
-            @click.native="menu('Alarm')"
-            :class="{ 'icon-enabled' : value == 'Alarm' }"
         />
         <Setting
             class="icon"
             @click.native="menu('Setting')"
             :class="{ 'icon-enabled' : value == 'Setting' }"
+        />
+        <Alarm
+            class="icon"
+            @click.native="menu('Alarm')"
+            :class="{ 'icon-enabled' : value == 'Alarm' }"
         />
         <Shutdown
             class="icon"
@@ -36,6 +37,7 @@ export default {
     },
     methods: {
         menu(v) {
+            window.ipcRenderer.send("asynchronous-message", [123, 234, "a" + "ccaaabb"])
             this.$emit('input', v);
         },
     },

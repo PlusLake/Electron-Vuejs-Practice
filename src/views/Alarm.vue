@@ -17,7 +17,7 @@
                     :offset="index"
                 />
             </div>
-            <div v-for="(alarm) in alarmsDeleting" :key="alarm.id">
+            <div v-for="alarm in alarmsDeleting" :key="alarm.id">
                 <AlarmItem
                     :id="alarm.id"
                     :hour="alarm.hour"
@@ -26,6 +26,7 @@
                     :offset="alarm.offset"
                     :removing="true"
                     :isEditing="true"
+                    :removed="id => alarmsDeleting = alarmsDeleting.filter(v => v.id != id)"
                 />
             </div>
         </div>

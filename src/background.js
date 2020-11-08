@@ -3,17 +3,19 @@
 import { app, protocol, BrowserWindow } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
+import "@/native.js"
 const isDevelopment = process.env.NODE_ENV !== "production";
+const path = require("path");
 
 protocol.registerSchemesAsPrivileged([{ scheme: "app", privileges: { secure: true, standard: true } }]);
-
 async function createWindow() {
     const window = new BrowserWindow({
         width: 405,
         height: 720,
         frame: false,
         webPreferences: {
-            nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+            nodeIntegration: false,
+            preload: path.join(__dirname, 'preload.js'),
         },
     });
     window.setMenu(null);
