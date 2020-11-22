@@ -17,7 +17,9 @@
             <div class="description" :style="`transform: translate(${isEditing ? 32 : 0}px, 0px);`">
                 {{ description }}
             </div>
-            <SwitchButton class="button" v-model="enabled" />
+            <SwitchButton class="button"
+                :switched="v => switched(id, v)"
+                :value="enabled"/>
         </div>
     </div>
 </template>
@@ -40,11 +42,8 @@ export default {
         offset: Number,
         removing: Boolean,
         removed: Function,
-    },
-    data() {
-        return {
-            enabled: false,
-        }
+        switched: Function,
+        enabled: Boolean,
     },
 };
 </script>

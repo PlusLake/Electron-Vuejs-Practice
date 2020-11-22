@@ -1,23 +1,15 @@
 <template>
-    <div class="switch" @click="value = !value" :class="{ 'on' : value }"/>
+    <div class="switch" @click="switched(!value)" :class="{ 'on' : value }"/>
 </template>
 
 <script>
 export default {
     name: "SwitchButton",
-    data() {
-        return {
-            value: false
-        }
+    props: {
+        switches: Function,
+        switched: Function,
+        value: Boolean,
     },
-    methods: {
-        get() {
-            return this.value
-        },
-        set(v) {
-            this.value = v
-        },
-    }
 };
 </script>
 

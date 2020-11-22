@@ -37,8 +37,7 @@ export default {
     },
     methods: {
         menu(v) {
-            window.ipcRenderer.send("asynchronous-message", [123, 234, "a" + "ccaaabb"])
-            this.$emit('input', v);
+            this.$emit("input", v);
         },
     },
 };

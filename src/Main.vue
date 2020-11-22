@@ -7,6 +7,7 @@
             <Setting v-if="view == 'Setting'" />
             <Footer v-model="view"/>
         </div>
+        <MessageBox title="Hello" content="World"/>
     </div>
 </template>
 
@@ -15,19 +16,14 @@ import Footer from "@/components/Footer.vue";
 import Alarm from "@/views/Alarm.vue";
 import Stopwatch from "@/views/Stopwatch.vue";
 import Setting from "@/views/Setting.vue";
+import MessageBox from "@/components/MessageBox.vue";
 
 export default {
     name: "Main",
-    components: { Footer, Alarm, Stopwatch, Setting },
+    components: { Footer, Alarm, Stopwatch, Setting, MessageBox },
     data() {
         return {
             time: {},
-            alarms: [
-                { id: this.randomString(), hour: 7, minute: 21, description: "Go to school." },
-                { id: this.randomString(), hour: 8, minute: 10, description: "Buy bread." },
-            ],
-            alarmAdd: { visible: false },
-            isEditing: false,
             view: "Alarm",
         };
     },
@@ -50,14 +46,9 @@ export default {
         },
         formatTime(time) {
             return [ time.hour, time.minute, time.second ]
+                .map(v => v ?? 0)
                 .map(v => (v + "").padStart(2, "0"))
                 .join(":")
-        },
-        addAlarm(alarm) {
-            alarm.id = this.randomString();
-            alarm.description = alarm.description || "　";
-            this.alarmAdd.visible = false;
-            this.alarms.push(alarm);
         },
         randomString() {
             return [...Array(32)].map(() => (~~(Math.random() * 36)).toString(36)).join("");

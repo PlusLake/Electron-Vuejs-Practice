@@ -1,12 +1,43 @@
 const { ipcMain } = require("electron");
 const FilsSystem = require("fs");
+const HOME = require("os").homedir();
+const PATH = HOME + "/.pluslib/alarm/";
+const FILENAME = "alarm.json";
 
-ipcMain.on("asynchronous-message", (event, arg) => {
-    console.log(arg);
-    event.reply("asynchronous-reply", Math.random());
+/* Create file and related directories if necessary */
+const saveAlarm = content => {
+    let failed = false;
+    try {
+        FilsSystem.mkdirSync(PATH, { recursive: true }, () => {
+            failed = true;
+        });
+        if (!failed) {
+            FilsSystem.writeFileSync(PATH + FILENAME, content);
+        }
+    } catch {
+        return false;
+    }
+    return true;
+}
+
+// Load alarms from file
+ipcMain.on("LOAD_ALARMS", event => {
+    let data = {};
+    try {
+        data = JSON.parse(FilsSystem.readFileSync(PATH + FILENAME, "utf-8"));
+    } catch {
+        if (!saveAlarm("{}")) {
+            /**
+             * TODO:
+             * Tell the client cannot open alarm.json
+             * and every alarms would not be saved.
+             */
+        }
+    }
+    event.returnValue = data;
 });
 
-ipcMain.on("LOAD_ALARMS", event => {
-    const data = FilsSystem.readFileSync("/home/plus/fs-test.txt", "utf-8");
-    event.reply("asynchronous-reply", JSON.parse(data));
+// Write alarms to file
+ipcMain.on("SAVE_ALARMS", (event, alarms) => {
+    event.reply("SAVE_ALARMS", saveAlarm(JSON.stringify(alarms)));
 });
